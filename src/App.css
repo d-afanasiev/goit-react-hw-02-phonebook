@@ -2,3 +2,36 @@
   width: 600px;
   margin: 50px;
 }
+
+.titlePhonebook {
+  font-size: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 150px;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.name {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.inputName,
+.inputTel,
+.inputFilter {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.submitName {
+  width: 100px;
+}
+
+.titleContacts {
+  font-size: 30px;
+}
