@@ -33,11 +33,25 @@ class App extends Component {
   };
 
   filterList = (e) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter((item) =>
-        item.name.includes(e.target.value)
-      ),
-    }));
+    console.log(e.target.value);
+    if (e.target.value !== "") {
+      this.setState((prevState) => ({
+        filter: e.target.value,
+        contacts: prevState.contacts.filter((item) =>
+          item.name.toLowerCase().includes(this.state.filter)
+        ),
+      }));
+    } else {
+      this.setState({
+        contacts: [
+          { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+          { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+          { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+          { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+        ],
+        filter: "",
+      });
+    }
   };
 
   handleChange = (e) => {
@@ -54,7 +68,7 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, name, number } = this.state;
+    const { contacts, name, number, filter } = this.state;
     return (
       <div className="App">
         <header>
@@ -101,7 +115,7 @@ class App extends Component {
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             className="inputFilter"
             onChange={this.filterList}
-            // value={filter}
+            value={filter}
           />
 
           <ul className="listContacts">
