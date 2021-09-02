@@ -1,7 +1,7 @@
 import "./App.css";
 import PropTypes from "prop-types";
 import { Component } from "react";
-import { v4 as uuidv4 } from "uuid";
+import ContactForm from "./components/ContactForm/ContactForm";
 
 class App extends Component {
   state = {
@@ -12,24 +12,6 @@ class App extends Component {
       { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
     ],
     filter: "",
-    name: "",
-    number: "",
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    let idFullName = uuidv4();
-    const totalState = {
-      id: idFullName,
-      name: this.state.name,
-      number: this.state.number,
-    };
-
-    this.setState((prevState) => ({
-      contacts: [totalState, ...prevState.contacts],
-    }));
-
-    this.reset();
   };
 
   filterList = (e) => {
@@ -54,78 +36,38 @@ class App extends Component {
     }
   };
 
-  handleChange = (e) => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
-  };
-
-  reset = () => {
-    this.setState({
-      filter: "",
-      name: "",
-      number: "",
-    });
+  formSubmitHandler = (data) => {
+    this.setState((prevState) => ({
+      contacts: [data, ...prevState.contacts],
+    }));
   };
 
   render() {
-    const { contacts, name, number, filter } = this.state;
+    const { contacts, filter } = this.state;
     return (
       <div className="App">
-        <header>
-          <h1 className="titlePhonebook">Phonebook</h1>
-          <form className="form" onSubmit={this.handleSubmit}>
-            <label htmlFor="sendName" className="name">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-              required
-              value={name}
-              onChange={this.handleChange}
-              className="inputName"
-              id="sendName"
-            />
-            <label htmlFor="sendTel">Number</label>
-            <input
-              type="tel"
-              name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-              required
-              className="inputTel"
-              onChange={this.handleChange}
-              value={number}
-              id="sendTel"
-            />
-            <button type="submit" className="submitName">
-              Add contact
-            </button>
-          </form>
+        <h1 className="titlePhonebook">Phonebook</h1>
+        <ContactForm formSubmitHandler={this.formSubmitHandler} />
+        <h1 className="titleContacts">Contacts</h1>
 
-          <h1 className="titleContacts">Contacts</h1>
+        <p>Find contacts by name</p>
+        <input
+          type="text"
+          name="filter"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+          className="inputFilter"
+          onChange={this.filterList}
+          value={filter}
+        />
 
-          <p>Find contacts by name</p>
-          <input
-            type="text"
-            name="filter"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            className="inputFilter"
-            onChange={this.filterList}
-            value={filter}
-          />
-
-          <ul className="listContacts">
-            {contacts.map((contact) => (
-              <li key={contact.id}>
-                {contact.name}: {contact.number}
-              </li>
-            ))}
-          </ul>
-        </header>
+        <ul className="listContacts">
+          {contacts.map((contact) => (
+            <li key={contact.id}>
+              {contact.name}: {contact.number}
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
