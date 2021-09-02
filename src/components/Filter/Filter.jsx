@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import css from "./Filter.module.css";
 
 function Filter({ filter, filterList }) {
-  console.log(filter);
   return (
     <div>
       <p>Find contacts by name</p>

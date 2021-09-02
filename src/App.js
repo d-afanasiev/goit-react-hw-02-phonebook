@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Component } from "react";
 import ContactForm from "./components/ContactForm/ContactForm";
 import Filter from "./components/Filter/Filter";
+import ContactList from "./components/ContactList/ContactList";
 
 class App extends Component {
   state = {
@@ -22,10 +23,15 @@ class App extends Component {
   };
 
   formSubmitHandler = (data) => {
-    console.log(data);
-    this.setState((prevState) => ({
-      contacts: [data, ...prevState.contacts],
-    }));
+    const findContacts = this.state.contacts.find(
+      (contact) => contact.name === data.name
+    );
+
+    !findContacts
+      ? this.setState((prevState) => ({
+          contacts: [data, ...prevState.contacts],
+        }))
+      : alert(`${data.name} is already in contacts.`);
   };
 
   getVisibleList = () => {
@@ -46,17 +52,10 @@ class App extends Component {
       <div className="App">
         <h1 className="titlePhonebook">Phonebook</h1>
         <ContactForm formSubmitHandler={this.formSubmitHandler} />
+
         <h1 className="titleContacts">Contacts</h1>
-
         <Filter filter={filter} filterList={this.filterList} />
-
-        <ul className="listContacts">
-          {getVisibleContacts.map((contact) => (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
+        <ContactList getVisibleContacts={getVisibleContacts} />
       </div>
     );
   }
@@ -67,6 +66,7 @@ App.propTypes = {
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
+      number: PropTypes.string,
     })
   ),
 };
